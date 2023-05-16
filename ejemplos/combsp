@@ -1,0 +1,1 @@
+mpicxx -I/home/osiris/bsp/include -o $1 $1.cpp -lbsponmpi -L/home/osiris/bsp/lib
