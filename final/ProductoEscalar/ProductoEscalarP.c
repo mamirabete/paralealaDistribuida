@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
     if (argc < 2) {
         printf("No se han especificado valores correctos para los parámetros requeridos.\n");
         printf("La cantidad de elementos serán: %d sin formato CSV.\n", cantidadElementos);
-        printf("Utilizando %d procesadores\n", numProcs);
+        printf("Utilizando %d procesos\n", numProcs);
         printf("Uso: ProductoEscalarP <cantidadElementos> <csv> <encabezado>\n\n");
     } else {
       if (argc >= 2) {

@@ -132,7 +132,7 @@ int main(int argc, char *argv[]) {
         } else {
             if (encabezado == 1) {
                 // printf("cantidadElementos,productoVectorial,microsegundosEjec,segundosEjec\n");
-                printf("cantidadElementos,microsegundosEjec,segundosEjec\n");
+                printf("cantidadElementos,numProcs,microsegundosEjec,segundosEjec\n");
             }
             // printf("%d,%lln,%f,%f\n", cantidadElementos, numProcs,resultados, tiempo, tiempoSeg);
             printf("%d,%d,%f,%f\n", cantidadElementos, numProcs, tiempo, tiempoSeg);
