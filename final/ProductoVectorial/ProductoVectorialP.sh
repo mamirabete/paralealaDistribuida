@@ -8,9 +8,9 @@ ejecutaPrograma() {
     for arg in "$@"; do
         for repetir in 1 2 3; do
             if [ $encab -eq 0 ]; then
-                mpirun -np 2 ProductoVectorialP "$arg" csv encabezado
+                mpirun -np 4 ProductoVectorialP "$arg" csv encabezado
             else         
-                mpirun -np 2 ProductoVectorialP "$arg" csv
+                mpirun -np 4 ProductoVectorialP "$arg" csv
             fi
             encab=1
         done
