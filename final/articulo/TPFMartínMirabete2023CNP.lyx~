@@ -40,8 +40,8 @@
 \use_default_options false
 \maintain_unincluded_children false
 \language spanish
-\language_package auto
-\inputencoding auto
+\language_package babel
+\inputencoding utf8-plain
 \fontencoding default
 \font_roman "default" "default"
 \font_sans "default" "default"
@@ -168,7 +168,7 @@ CONCURRENTE Y DISTRIBUIDA”
 
 \begin_layout Standard
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -190,7 +190,7 @@ TPF - Paradigmas de Computación Paralela, Concurrente y Distribuida
 
 \begin_layout Standard
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -220,7 +220,7 @@ status collapsed
 
 
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -236,7 +236,7 @@ status collapsed
 
 
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -622,6 +622,559 @@ Implemente la multiplicación escalar, en programación secuencial.
 \end_layout
 
 \begin_layout Standard
+
+\lang english
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Verbatim
+
+/*
+\end_layout
+
+\begin_layout Verbatim
+
+// Programa: ProductoEscalarS.c
+\end_layout
+
+\begin_layout Verbatim
+
+// gcc ProductoEscalarS.c -o ProductoEscalarS -Wall -pedantic
+\end_layout
+
+\begin_layout Verbatim
+
+*/
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+#include <stdio.h>
+\end_layout
+
+\begin_layout Verbatim
+
+#include <stdlib.h>
+\end_layout
+
+\begin_layout Verbatim
+
+#include <time.h>
+\end_layout
+
+\begin_layout Verbatim
+
+#include <sys/time.h>
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+#define CANTIDAD_DEF 100 // cantidad de elementos por defecto
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+int main(int argc, char *argv[]) {
+\end_layout
+
+\begin_layout Verbatim
+
+  int cantidadElementos = CANTIDAD_DEF;
+\end_layout
+
+\begin_layout Verbatim
+
+  int par, impar, count,  outCsv = 0, encabezado = 0;
+\end_layout
+
+\begin_layout Verbatim
+
+  long long int productoEscalar = 0;
+\end_layout
+
+\begin_layout Verbatim
+
+  
+\end_layout
+
+\begin_layout Verbatim
+
+  struct timeval inicio, fin; // estructuras para medir el tiempo de ejecución
+ en microsegundos
+\end_layout
+
+\begin_layout Verbatim
+
+  clock_t iniSeg, finSeg; // variables para medir el tiempo de ejecución
+ en segundos
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // Se verifican los parámetros
+\end_layout
+
+\begin_layout Verbatim
+
+  // TO DO: Se puede mejorar el control de parámetros.
+ Pero no es el onjeto de estudio
+\end_layout
+
+\begin_layout Verbatim
+
+  if (argc < 2) {
+\end_layout
+
+\begin_layout Verbatim
+
+    printf("No se han especificado valores correctos para los parámetros
+ requeridos.
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+    printf("La cantidad de elementos serán: %d sin formato CSV.
+\backslash
+n", cantidadElementos);
+\end_layout
+
+\begin_layout Verbatim
+
+    printf("Uso: ProductoEscalarS <cantidadElementos> <csv> <encabezado>
+\backslash
+n
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+  } else {
+\end_layout
+
+\begin_layout Verbatim
+
+    if (argc >= 2) {
+\end_layout
+
+\begin_layout Verbatim
+
+      cantidadElementos = atoi(argv[1]);
+\end_layout
+
+\begin_layout Verbatim
+
+    }
+\end_layout
+
+\begin_layout Verbatim
+
+    if (argc >= 3) 
+\end_layout
+
+\begin_layout Verbatim
+
+      outCsv=1;
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    if (argc == 4)
+\end_layout
+
+\begin_layout Verbatim
+
+      encabezado = 1;
+\end_layout
+
+\begin_layout Verbatim
+
+  }
+\end_layout
+
+\begin_layout Verbatim
+
+  
+\end_layout
+
+\begin_layout Verbatim
+
+  
+\end_layout
+
+\begin_layout Verbatim
+
+  // guardar el tiempo de inicio
+\end_layout
+
+\begin_layout Verbatim
+
+  iniSeg = clock(); 
+\end_layout
+
+\begin_layout Verbatim
+
+  gettimeofday(&inicio, NULL); 
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  
+\end_layout
+
+\begin_layout Verbatim
+
+  // Creo los vectores
+\end_layout
+
+\begin_layout Verbatim
+
+  int* vectorA;
+\end_layout
+
+\begin_layout Verbatim
+
+  int* vectorB;
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // Asignar memoria para los vectores 
+\end_layout
+
+\begin_layout Verbatim
+
+  vectorA = (int*) malloc(cantidadElementos * sizeof(int));
+\end_layout
+
+\begin_layout Verbatim
+
+  vectorB = (int*) malloc(cantidadElementos * sizeof(int));
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // Verificar si la asignación de memoria fue exitosa
+\end_layout
+
+\begin_layout Verbatim
+
+  if ((vectorA == NULL) || (vectorB == NULL)) {
+\end_layout
+
+\begin_layout Verbatim
+
+      printf("No se pudo asignar memoria
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+      exit(1);
+\end_layout
+
+\begin_layout Verbatim
+
+  }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  //Cargar los vectores
+\end_layout
+
+\begin_layout Verbatim
+
+  par = 0; 
+\end_layout
+
+\begin_layout Verbatim
+
+  impar = 0;
+\end_layout
+
+\begin_layout Verbatim
+
+  for (count = 0; count < (cantidadElementos * 2) - 1; ++count) {
+\end_layout
+
+\begin_layout Verbatim
+
+    if (count % 2 == 0) { // si es par, lo agrega al VectorA
+\end_layout
+
+\begin_layout Verbatim
+
+      vectorA[par] = count;
+\end_layout
+
+\begin_layout Verbatim
+
+      par++; // aumentar el contador de números pares
+\end_layout
+
+\begin_layout Verbatim
+
+    } else { // si es impar, lo agrega al VectorB
+\end_layout
+
+\begin_layout Verbatim
+
+      vectorB[impar] = count;
+\end_layout
+
+\begin_layout Verbatim
+
+      impar++; // aumentar el contador de números impares
+\end_layout
+
+\begin_layout Verbatim
+
+    }
+\end_layout
+
+\begin_layout Verbatim
+
+  }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // Calculo del producto escalar entre dos vectores
+\end_layout
+
+\begin_layout Verbatim
+
+  productoEscalar = 0;
+\end_layout
+
+\begin_layout Verbatim
+
+  for (count = 0; count < cantidadElementos; ++count) {
+\end_layout
+
+\begin_layout Verbatim
+
+      productoEscalar += vectorA[count] * vectorB[count];
+\end_layout
+
+\begin_layout Verbatim
+
+  }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // guardar el tiempo de finalización
+\end_layout
+
+\begin_layout Verbatim
+
+  finSeg = clock(); 
+\end_layout
+
+\begin_layout Verbatim
+
+  gettimeofday(&fin, NULL); 
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // calcular y mostrar el tiempo de ejecución en microsegundos
+\end_layout
+
+\begin_layout Verbatim
+
+  double tiempo = (double)(fin.tv_usec - inicio.tv_usec) + (double)(fin.tv_sec
+ - inicio.tv_sec) * 1000000;
+\end_layout
+
+\begin_layout Verbatim
+
+  // calcular y mostrar el tiempo de ejecución en segundos
+\end_layout
+
+\begin_layout Verbatim
+
+  double tiempoSeg = ((double) (finSeg - iniSeg)) / CLOCKS_PER_SEC;
+\end_layout
+
+\begin_layout Verbatim
+
+  
+\end_layout
+
+\begin_layout Verbatim
+
+  if (outCsv != 1){
+\end_layout
+
+\begin_layout Verbatim
+
+    printf("Ejecución secuencial del producto escalar entre
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+    printf("dos vectores de %d elementos es: %lli
+\backslash
+n", cantidadElementos, productoEscalar);
+\end_layout
+
+\begin_layout Verbatim
+
+    printf("Tiempo de ejecución: %f microsegundos (µs)
+\backslash
+n", tiempo);
+\end_layout
+
+\begin_layout Verbatim
+
+    printf("Tiempo de ejecución: %f segundos
+\backslash
+n
+\backslash
+n
+\backslash
+n", tiempoSeg);
+\end_layout
+
+\begin_layout Verbatim
+
+  } else {
+\end_layout
+
+\begin_layout Verbatim
+
+    if (encabezado == 1)
+\end_layout
+
+\begin_layout Verbatim
+
+      printf("cantidadElementos,productoEscalar,microsegundosEjec,segundosEjec
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    printf("%d,%lli,%f,%f
+\backslash
+n", cantidadElementos, productoEscalar, tiempo, tiempoSeg);
+\end_layout
+
+\begin_layout Verbatim
+
+  }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // Liberar la memoria asignada a los vectores 
+\end_layout
+
+\begin_layout Verbatim
+
+  free(vectorA);
+\end_layout
+
+\begin_layout Verbatim
+
+  free(vectorB);
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  return 0;
+\end_layout
+
+\begin_layout Verbatim
+
+}
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 El código del programa 
 \shape italic
 ProductoEscalarS.c
@@ -756,142 +1309,779 @@ Implemente la multiplicación vectorial, en programación secuencial.
 \end_layout
 
 \begin_layout Standard
-Este código de programación, contenido en el archivo ProductoVectorialS.c,
- implementa el cálculo del producto vectorial en programación secuencial.
- A continuación, describiré paso a paso la implementación:
+
+\lang english
+\begin_inset VSpace medskip
+\end_inset
+
+
 \end_layout
 
-\begin_layout Enumerate
-Se incluyen las bibliotecas necesarias para el funcionamiento del programa,
- como stdio.h, stdlib.h, time.h y sys/time.h.
+\begin_layout Verbatim
+
+/*
 \end_layout
 
-\begin_layout Enumerate
-Se define la constante CANTIDAD_DEF con un valor predeterminado de 100,
- que representa la cantidad de elementos por defecto en los vectores.
+\begin_layout Verbatim
+
+// Programa: ProductoEscalarP.c
 \end_layout
 
-\begin_layout Enumerate
-Se declara la función principal main con los parámetros argc y argv[].
+\begin_layout Verbatim
+
+// % mpicc -o ProductoEscalarP ProductoEscalarP.c
 \end_layout
 
-\begin_layout Enumerate
-Se declara la variable cantidadElementos e se inicializa con el valor de
- CANTIDAD_DEF por defecto.
+\begin_layout Verbatim
+
+// % mpirun -np 2 ProductoEscalarP
 \end_layout
 
-\begin_layout Enumerate
-Se declara la variable outCsv e encabezado y se inicializan en 0, que se
- utilizarán para controlar la generación la salida en formato CSV y la inclusión
- de un encabezado en la salida.
+\begin_layout Verbatim
+
+*/
 \end_layout
 
-\begin_layout Enumerate
-Se declaran las variables count1 y count2 para utilizar en bucles y las
- variables de puntero vectorA, vectorB y productoVectorial.
+\begin_layout Verbatim
+
 \end_layout
 
-\begin_layout Enumerate
-Se declaran estructuras de tiempo, inicio y fin, utilizando struct timeval
- para medir el tiempo de ejecución en microsegundos, y las variables iniSeg
- y finSeg utilizando clock_t para medir el tiempo de ejecución en segundos.
+\begin_layout Verbatim
+
+#include <stdio.h>
 \end_layout
 
-\begin_layout Enumerate
-Se verifica si se han proporcionado los parámetros requeridos en la línea
- de comandos.
- Si no se proporcionaron, se muestra un mensaje de error y se imprime la
- cantidad de elementos por defecto y el formato de uso del programa.
+\begin_layout Verbatim
+
+#include <stdlib.h>
 \end_layout
 
-\begin_layout Enumerate
-Si se proporcionaron los parámetros requeridos, se actualiza la variable
- cantidadElementos según el valor proporcionado.
+\begin_layout Verbatim
+
+#include <time.h>
 \end_layout
 
-\begin_layout Enumerate
-Se verifica si se proporcionaron los parámetros opcionales para el formato
- CSV y el encabezado.
- Si se proporcionaron, se actualizan las variables outCsv y encabezado en
- consecuencia.
+\begin_layout Verbatim
+
+#include <sys/time.h>
 \end_layout
 
-\begin_layout Enumerate
-Se guarda el tiempo de inicio de la ejecución utilizando clock() y gettimeofday(
-).
+\begin_layout Verbatim
+
+#include <mpi.h>
 \end_layout
 
-\begin_layout Enumerate
-Se asigna memoria dinámicamente a los vectores vectorA, vectorB y productoVector
-ial según la cantidad de elementos.
+\begin_layout Verbatim
+
 \end_layout
 
-\begin_layout Enumerate
-Se verifica si la asignación de memoria fue exitosa.
- Si alguno de los vectores es NULL, se imprime un mensaje de error, se finaliza
- el programa.
+\begin_layout Verbatim
+
+// cantidad de elementos por defecto
 \end_layout
 
-\begin_layout Enumerate
-Se llenan los vectores vectorA y vectorB con los números naturales impares
- y pares, respectivamente, utilizando bucles for.
+\begin_layout Verbatim
+
+#define CANTIDAD_DEF 100 
 \end_layout
 
-\begin_layout Enumerate
-Se realiza el cálculo del producto vectorial utilizando un bucle anidado.
- Para cada elemento del vector resultante, se suma el producto de los elementos
- correspondientes de vectorA y vectorB.
+\begin_layout Verbatim
+
 \end_layout
 
-\begin_layout Enumerate
-Se guarda el tiempo de finalización de la ejecución utilizando clock() y
- gettimeofday().
+\begin_layout Verbatim
+
+int main(int argc, char *argv[]) {
 \end_layout
 
-\begin_layout Enumerate
-Se calcula el tiempo de ejecución en microsegundos (tiempo) y en segundos
- (tiempoSeg).
+\begin_layout Verbatim
+
+  int cantidadElementos = CANTIDAD_DEF;
 \end_layout
 
-\begin_layout Enumerate
-Si no se especificó la opción de formato CSV, se imprime por pantalla el
- resultado del producto vectorial y el tiempo de ejecución en microsegundos
- y segundos.
+\begin_layout Verbatim
+
+  int par, impar, count,  outCsv = 0, encabezado = 0;
 \end_layout
 
-\begin_layout Enumerate
-Si se especificó la opción de formato CSV, se imprime un encabezado en el
- archivo CSV si se proporcionó la opción de encabezado.
- Luego se imprime la cantidad de elementos, el tiempo de ejecución en microsegun
-dos y el tiempo de ejecución en segundos en el archivo CSV.
+\begin_layout Verbatim
+
+  long long int productoEscalar = 0, productoEscalarParcial = 0;
 \end_layout
 
-\begin_layout Enumerate
-Se libera la memoria asignada a los vectores vectorA, vectorB y productoVectoria
-l utilizando free().
+\begin_layout Verbatim
+
+  
 \end_layout
 
-\begin_layout Enumerate
-Se retorna 0 para indicar que el programa se ejecutó correctamente.
+\begin_layout Verbatim
+
+  // estructuras para medir el tiempo de ejecución en microsegundos
+\end_layout
+
+\begin_layout Verbatim
+
+  struct timeval inicio, fin; 
+\end_layout
+
+\begin_layout Verbatim
+
+  // variables para medir el tiempo de ejecución en segundos
+\end_layout
+
+\begin_layout Verbatim
+
+  clock_t iniSeg, finSeg; 
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // Inicializar MPI
+\end_layout
+
+\begin_layout Verbatim
+
+  int miRango, numProcs;
+\end_layout
+
+\begin_layout Verbatim
+
+  MPI_Init(&argc, &argv);
+\end_layout
+
+\begin_layout Verbatim
+
+  MPI_Comm_rank(MPI_COMM_WORLD, &miRango);
+\end_layout
+
+\begin_layout Verbatim
+
+  MPI_Comm_size(MPI_COMM_WORLD, &numProcs);
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // Se verifican los parámetros
+\end_layout
+
+\begin_layout Verbatim
+
+  // TO DO: Se puede mejorar el control de parámetros.
+ Pero no es 
+\end_layout
+
+\begin_layout Verbatim
+
+  // el objeto de estudio
+\end_layout
+
+\begin_layout Verbatim
+
+  if (miRango == 0) {
+\end_layout
+
+\begin_layout Verbatim
+
+    if (argc < 2) {
+\end_layout
+
+\begin_layout Verbatim
+
+        printf("No se han especificado valores correctos para los parámetros
+ requeridos.
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+        printf("La cantidad de elementos serán: %d sin formato CSV.
+\backslash
+n", cantidadElementos);
+\end_layout
+
+\begin_layout Verbatim
+
+        printf("Utilizando %d procesos
+\backslash
+n", numProcs);
+\end_layout
+
+\begin_layout Verbatim
+
+        printf("Uso: ProductoEscalarP <cantidadElementos> <csv> <encabezado>
+\backslash
+n
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+    } else {
+\end_layout
+
+\begin_layout Verbatim
+
+      if (argc >= 2) {
+\end_layout
+
+\begin_layout Verbatim
+
+        cantidadElementos = atoi(argv[1]);
+\end_layout
+
+\begin_layout Verbatim
+
+      }
+\end_layout
+
+\begin_layout Verbatim
+
+      if (argc >= 3) 
+\end_layout
+
+\begin_layout Verbatim
+
+        outCsv=1;
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+      if (argc == 4)
+\end_layout
+
+\begin_layout Verbatim
+
+        encabezado = 1;
+\end_layout
+
+\begin_layout Verbatim
+
+    }
+\end_layout
+
+\begin_layout Verbatim
+
+  }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // Dividir el trabajo entre los procesos
+\end_layout
+
+\begin_layout Verbatim
+
+  int elementosPorProceso = cantidadElementos / numProcs;
+\end_layout
+
+\begin_layout Verbatim
+
+  int elementosRestantes = cantidadElementos % numProcs;
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // guardar el tiempo de inicio
+\end_layout
+
+\begin_layout Verbatim
+
+  iniSeg = clock(); 
+\end_layout
+
+\begin_layout Verbatim
+
+  gettimeofday(&inicio, NULL); 
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // Creo los vectores
+\end_layout
+
+\begin_layout Verbatim
+
+  int* vectorA;
+\end_layout
+
+\begin_layout Verbatim
+
+  int* vectorB;
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // Asignar memoria para los vectores 
+\end_layout
+
+\begin_layout Verbatim
+
+  vectorA = (int*) malloc(elementosPorProceso * sizeof(int));
+\end_layout
+
+\begin_layout Verbatim
+
+  vectorB = (int*) malloc(elementosPorProceso * sizeof(int));
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // Verificar si la asignación de memoria fue exitosa
+\end_layout
+
+\begin_layout Verbatim
+
+  if ((vectorA == NULL) || (vectorB == NULL)) {
+\end_layout
+
+\begin_layout Verbatim
+
+      printf("No se pudo asignar memoria
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+      MPI_Finalize(); // Finalizar MPI
+\end_layout
+
+\begin_layout Verbatim
+
+      exit(1);
+\end_layout
+
+\begin_layout Verbatim
+
+  }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  //Cargar los vectores
+\end_layout
+
+\begin_layout Verbatim
+
+  par = 0; 
+\end_layout
+
+\begin_layout Verbatim
+
+  impar = 0;
+\end_layout
+
+\begin_layout Verbatim
+
+  for (count = miRango * elementosPorProceso; count < (miRango + 1) * elementosP
+orProceso; ++count) {
+\end_layout
+
+\begin_layout Verbatim
+
+    if (count % 2 == 0) { // si es par, lo agrega al VectorA
+\end_layout
+
+\begin_layout Verbatim
+
+      vectorA[par] = count;
+\end_layout
+
+\begin_layout Verbatim
+
+      par++; // aumentar el contador de números pares
+\end_layout
+
+\begin_layout Verbatim
+
+    } else { // si es impar, lo agrega al VectorB
+\end_layout
+
+\begin_layout Verbatim
+
+      vectorB[impar] = count;
+\end_layout
+
+\begin_layout Verbatim
+
+      impar++; // aumentar el contador de números impares
+\end_layout
+
+\begin_layout Verbatim
+
+    }
+\end_layout
+
+\begin_layout Verbatim
+
+  }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // Si hay elementos restantes, se procesan en el proceso 0
+\end_layout
+
+\begin_layout Verbatim
+
+  if (miRango == 0 && elementosRestantes > 0) {
+\end_layout
+
+\begin_layout Verbatim
+
+    for (count = cantidadElementos - elementosRestantes; count < cantidadElement
+os; ++count) {
+\end_layout
+
+\begin_layout Verbatim
+
+      if (count % 2 == 0) { // si es par, lo agrega al VectorA
+\end_layout
+
+\begin_layout Verbatim
+
+        vectorA[par] = count;
+\end_layout
+
+\begin_layout Verbatim
+
+        par++; // aumentar el contador de números pares
+\end_layout
+
+\begin_layout Verbatim
+
+      } else { // si es impar, lo agrega al VectorB
+\end_layout
+
+\begin_layout Verbatim
+
+        vectorB[impar] = count;
+\end_layout
+
+\begin_layout Verbatim
+
+        impar++; // aumentar el contador de números impares
+\end_layout
+
+\begin_layout Verbatim
+
+      }
+\end_layout
+
+\begin_layout Verbatim
+
+    }
+\end_layout
+
+\begin_layout Verbatim
+
+  }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // Calcular el producto escalar parcial
+\end_layout
+
+\begin_layout Verbatim
+
+  productoEscalarParcial = 0;
+\end_layout
+
+\begin_layout Verbatim
+
+  for (count = 0; count < elementosPorProceso; ++count) {
+\end_layout
+
+\begin_layout Verbatim
+
+      productoEscalarParcial += vectorA[count] * vectorB[count];
+\end_layout
+
+\begin_layout Verbatim
+
+  }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // Sumar los productos escalares parciales de todos los procesos
+\end_layout
+
+\begin_layout Verbatim
+
+  MPI_Reduce(&productoEscalarParcial, // Elemento a enviar
+\end_layout
+
+\begin_layout Verbatim
+
+             &productoEscalar, // Variable donde se almacena la reunion
+ de los datos
+\end_layout
+
+\begin_layout Verbatim
+
+             1, // Cantidad de datos a reunir 
+\end_layout
+
+\begin_layout Verbatim
+
+             MPI_LONG_LONG_INT, // Tipo del dato que se reunira
+\end_layout
+
+\begin_layout Verbatim
+
+             MPI_SUM, // Operacion aritmetica a aplicar 
+\end_layout
+
+\begin_layout Verbatim
+
+             0, // Proceso que recibira los datos 
+\end_layout
+
+\begin_layout Verbatim
+
+             MPI_COMM_WORLD); // Comunicador
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // guardar el tiempo de finalización
+\end_layout
+
+\begin_layout Verbatim
+
+  finSeg = clock(); 
+\end_layout
+
+\begin_layout Verbatim
+
+  gettimeofday(&fin, NULL); 
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // calcular y mostrar el tiempo de ejecución en microsegundos
+\end_layout
+
+\begin_layout Verbatim
+
+  double tiempo = (double)(fin.tv_usec - inicio.tv_usec) + (double)(fin.tv_sec
+ - inicio.tv_sec) * 1000000;
+\end_layout
+
+\begin_layout Verbatim
+
+  // calcular y mostrar el tiempo de ejecución en segundos
+\end_layout
+
+\begin_layout Verbatim
+
+  double tiempoSeg = ((double) (finSeg - iniSeg)) / CLOCKS_PER_SEC;
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // Mostrar el resultado
+\end_layout
+
+\begin_layout Verbatim
+
+  if (miRango == 0) {
+\end_layout
+
+\begin_layout Verbatim
+
+    if (outCsv != 1){
+\end_layout
+
+\begin_layout Verbatim
+
+      printf("Ejecución paralela del producto escalar entre
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+      printf("dos vectores de %d elementos es: %lli
+\backslash
+n", cantidadElementos, productoEscalar);
+\end_layout
+
+\begin_layout Verbatim
+
+      printf("Tiempo de ejecución: %f microsegundos (µs)
+\backslash
+n", tiempo);
+\end_layout
+
+\begin_layout Verbatim
+
+      printf("Tiempo de ejecución: %f segundos
+\backslash
+n
+\backslash
+n
+\backslash
+n", tiempoSeg);
+\end_layout
+
+\begin_layout Verbatim
+
+    } else {
+\end_layout
+
+\begin_layout Verbatim
+
+      if (encabezado == 1)
+\end_layout
+
+\begin_layout Verbatim
+
+        printf("cantidadElementos, cantidadProcesos,productoEscalar,microsegundo
+sEjec,segundosEjec
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+      printf("%d,%d,%lli,%f,%f
+\backslash
+n", cantidadElementos, numProcs, productoEscalar, tiempo, tiempoSeg);
+\end_layout
+
+\begin_layout Verbatim
+
+    }
+\end_layout
+
+\begin_layout Verbatim
+
+  }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // Liberar la memoria asignada a los vectores 
+\end_layout
+
+\begin_layout Verbatim
+
+  free(vectorA);
+\end_layout
+
+\begin_layout Verbatim
+
+  free(vectorB);
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  // Finalizar MPI
+\end_layout
+
+\begin_layout Verbatim
+
+  MPI_Finalize();
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+  return 0;
+\end_layout
+
+\begin_layout Verbatim
+
+}
 \end_layout
 
 \begin_layout Standard
-El producto vectorial de dos vectores es calculado por este código, en programac
-ión secuencial, según lo discutido previamente.
- Las convenciones establecidas en el seminario sobre producto vectorial
- y escalar son seguidas.
- El primer vector está compuesto por los primeros 100 términos de la serie
- de números naturales impares.
- El segundo vector está compuesto por los primeros 100 términos de la serie
- de números naturales pares, incluyendo el 0.
- El resultado, junto con el tiempo de ejecución en microsegundos y segundos,
- es mostrado.
- Si se especifica la opción correspondiente, también puede generar la salida
- en formato CSV con los resultados.
-\end_layout
 
-\begin_layout Subsection
-Implemente la multiplicación escalar, en programación paralela.
+\lang english
+\begin_inset VSpace medskip
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1021,7 +2211,1549 @@ En cuanto a la distribución del trabajo entre los procesos, se divide utilizand
 \end_layout
 
 \begin_layout Subsection
+Implemente la multiplicación vectorial, en programación secuencial.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Verbatim
+
+/*
+\end_layout
+
+\begin_layout Verbatim
+
+// Programa: ProductoVectorialS.c
+\end_layout
+
+\begin_layout Verbatim
+
+// gcc ProductoVectorialS.c -o ProsuctoVectorialS -Wall -pedantic
+\end_layout
+
+\begin_layout Verbatim
+
+*/
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+#include <stdio.h>
+\end_layout
+
+\begin_layout Verbatim
+
+#include <stdlib.h>
+\end_layout
+
+\begin_layout Verbatim
+
+#include <time.h>
+\end_layout
+
+\begin_layout Verbatim
+
+#include <sys/time.h>
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+#define CANTIDAD_DEF 100 // cantidad de elementos por defecto
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+int main(int argc, char *argv[]) {
+\end_layout
+
+\begin_layout Verbatim
+
+    int cantidadElementos = CANTIDAD_DEF;
+\end_layout
+
+\begin_layout Verbatim
+
+    int outCsv = 0, encabezado = 0;
+\end_layout
+
+\begin_layout Verbatim
+
+    int count1, count2;
+\end_layout
+
+\begin_layout Verbatim
+
+    int *vectorA, *vectorB;
+\end_layout
+
+\begin_layout Verbatim
+
+    long long int *productoVectorial = 0;
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    struct timeval inicio, fin; // estructuras para medir el tiempo de ejecución
+ en microsegundos
+\end_layout
+
+\begin_layout Verbatim
+
+    clock_t iniSeg, finSeg; // variables para medir el tiempo de ejecución
+ en segundos
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // Se verifican los parámetros
+\end_layout
+
+\begin_layout Verbatim
+
+    // TO DO: Se puede mejorar el control de parámetros.
+ Pero no es el onjeto de estudio
+\end_layout
+
+\begin_layout Verbatim
+
+    if (argc < 2) {
+\end_layout
+
+\begin_layout Verbatim
+
+        printf("No se han especificado valores correctos para los parámetros
+ requeridos.
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+        printf("La cantidad de elementos serán: %d sin formato CSV.
+\backslash
+n", cantidadElementos);
+\end_layout
+
+\begin_layout Verbatim
+
+        printf("Uso: ProductoEscalarS <cantidadElementos> <csv> <encabezado>
+\backslash
+n
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+    } else {
+\end_layout
+
+\begin_layout Verbatim
+
+    if (argc >= 2) {
+\end_layout
+
+\begin_layout Verbatim
+
+        cantidadElementos = atoi(argv[1]);
+\end_layout
+
+\begin_layout Verbatim
+
+    }
+\end_layout
+
+\begin_layout Verbatim
+
+    if (argc >= 3) 
+\end_layout
+
+\begin_layout Verbatim
+
+        outCsv=1;
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    if (argc == 4)
+\end_layout
+
+\begin_layout Verbatim
+
+        encabezado = 1;
+\end_layout
+
+\begin_layout Verbatim
+
+    }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // guardar el tiempo de inicio
+\end_layout
+
+\begin_layout Verbatim
+
+    iniSeg = clock(); 
+\end_layout
+
+\begin_layout Verbatim
+
+    gettimeofday(&inicio, NULL); 
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // Asignación dinámica de memoria para los vectores y el resultado
+\end_layout
+
+\begin_layout Verbatim
+
+    vectorA = (int*)malloc(cantidadElementos * sizeof(int));
+\end_layout
+
+\begin_layout Verbatim
+
+    vectorB = (int*)malloc(cantidadElementos * sizeof(int));
+\end_layout
+
+\begin_layout Verbatim
+
+    productoVectorial = (long long int*)malloc(cantidadElementos * sizeof(long
+ long int));
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // Verificar si la asignación de memoria fue exitosa
+\end_layout
+
+\begin_layout Verbatim
+
+    if ((vectorA == NULL) || (vectorB == NULL) || (productoVectorial ==
+ NULL)) {
+\end_layout
+
+\begin_layout Verbatim
+
+        printf("No se pudo asignar memoria
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+        exit(1);
+\end_layout
+
+\begin_layout Verbatim
+
+    }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // Llenar el primer vector con los primeros n números naturales impares
+\end_layout
+
+\begin_layout Verbatim
+
+    for (count1 = 0; count1 < cantidadElementos; count1++) {
+\end_layout
+
+\begin_layout Verbatim
+
+        vectorA[count1] = 2*count1 + 1;
+\end_layout
+
+\begin_layout Verbatim
+
+    }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // Llenar el segundo vector con los primeros n números naturales pares
+\end_layout
+
+\begin_layout Verbatim
+
+    for (count1 = 0; count1 < cantidadElementos; count1++) {
+\end_layout
+
+\begin_layout Verbatim
+
+        vectorB[count1] = 2*count1;
+\end_layout
+
+\begin_layout Verbatim
+
+    }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // Multiplicación de vectores utilizando el algoritmo de 
+\end_layout
+
+\begin_layout Verbatim
+
+    //la convensión aportada en el seminario
+\end_layout
+
+\begin_layout Verbatim
+
+    for (count1 = 0; count1 < cantidadElementos; count1++) {
+\end_layout
+
+\begin_layout Verbatim
+
+        productoVectorial[count1] = 0;
+\end_layout
+
+\begin_layout Verbatim
+
+        for (count2 = 0; count2 < cantidadElementos; count2++) {
+\end_layout
+
+\begin_layout Verbatim
+
+            productoVectorial[count1] += vectorA[count1] * vectorB[count2];
+\end_layout
+
+\begin_layout Verbatim
+
+        }
+\end_layout
+
+\begin_layout Verbatim
+
+    }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // guardar el tiempo de finalización
+\end_layout
+
+\begin_layout Verbatim
+
+    finSeg = clock(); 
+\end_layout
+
+\begin_layout Verbatim
+
+    gettimeofday(&fin, NULL); 
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // calcular y mostrar el tiempo de ejecución en microsegundos
+\end_layout
+
+\begin_layout Verbatim
+
+    double tiempo = (double)(fin.tv_usec - inicio.tv_usec) + (double)(fin.tv_sec
+ - inicio.tv_sec) * 1000000;
+\end_layout
+
+\begin_layout Verbatim
+
+    // calcular y mostrar el tiempo de ejecución en segundos
+\end_layout
+
+\begin_layout Verbatim
+
+    double tiempoSeg = ((double) (finSeg - iniSeg)) / CLOCKS_PER_SEC;
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    if (outCsv != 1){
+\end_layout
+
+\begin_layout Verbatim
+
+        printf("Ejecución secuencial del producto vectorial entre
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+        printf("dos vectores de %d elementos
+\backslash
+n", cantidadElementos);
+\end_layout
+
+\begin_layout Verbatim
+
+        // Imprimir el resultado del productoVectorial
+\end_layout
+
+\begin_layout Verbatim
+
+        //for (count1 = 0; count1 < cantidadElementos; count1++) {
+\end_layout
+
+\begin_layout Verbatim
+
+        //    printf("%lli ", productoVectorial[count1]);
+\end_layout
+
+\begin_layout Verbatim
+
+        //}
+\end_layout
+
+\begin_layout Verbatim
+
+        printf("
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+        printf("Tiempo de ejecución: %f microsegundos (µs)
+\backslash
+n", tiempo);
+\end_layout
+
+\begin_layout Verbatim
+
+        printf("Tiempo de ejecución: %f segundos
+\backslash
+n
+\backslash
+n
+\backslash
+n", tiempoSeg);
+\end_layout
+
+\begin_layout Verbatim
+
+    } else {
+\end_layout
+
+\begin_layout Verbatim
+
+        if (encabezado == 1){
+\end_layout
+
+\begin_layout Verbatim
+
+          //printf("cantidadElementos,productoVectorial,microsegundosEjec,segund
+osEjec
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+            printf("cantidadElementos,microsegundosEjec,segundosEjec
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+        }
+\end_layout
+
+\begin_layout Verbatim
+
+        //printf("%d,%lln,%f,%f
+\backslash
+n", cantidadElementos, productoVectorial, tiempo, tiempoSeg);
+\end_layout
+
+\begin_layout Verbatim
+
+        printf("%d,%f,%f
+\backslash
+n", cantidadElementos, tiempo, tiempoSeg);
+\end_layout
+
+\begin_layout Verbatim
+
+    }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // Liberar la memoria asignada a los vectores y el resultado
+\end_layout
+
+\begin_layout Verbatim
+
+    free(vectorA);
+\end_layout
+
+\begin_layout Verbatim
+
+    free(vectorB);
+\end_layout
+
+\begin_layout Verbatim
+
+    free(productoVectorial);
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    return 0;
+\end_layout
+
+\begin_layout Verbatim
+
+}
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Este código de programación, contenido en el archivo ProductoVectorialS.c,
+ implementa el cálculo del producto vectorial en programación secuencial.
+ A continuación, describiré paso a paso la implementación:
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Se incluyen las bibliotecas necesarias para el funcionamiento del programa,
+ como stdio.h, stdlib.h, time.h y sys/time.h.
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Se define la constante CANTIDAD_DEF con un valor predeterminado de 100,
+ que representa la cantidad de elementos por defecto en los vectores.
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Se declara la función principal main con los parámetros argc y argv[].
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Se declara la variable cantidadElementos e se inicializa con el valor de
+ CANTIDAD_DEF por defecto.
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Se declara la variable outCsv e encabezado y se inicializan en 0, que se
+ utilizarán para controlar la generación la salida en formato CSV y la inclusión
+ de un encabezado en la salida.
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Se declaran las variables count1 y count2 para utilizar en bucles y las
+ variables de puntero vectorA, vectorB y productoVectorial.
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Se declaran estructuras de tiempo, inicio y fin, utilizando struct timeval
+ para medir el tiempo de ejecución en microsegundos, y las variables iniSeg
+ y finSeg utilizando clock_t para medir el tiempo de ejecución en segundos.
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Se verifica si se han proporcionado los parámetros requeridos en la línea
+ de comandos.
+ Si no se proporcionaron, se muestra un mensaje de error y se imprime la
+ cantidad de elementos por defecto y el formato de uso del programa.
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Si se proporcionaron los parámetros requeridos, se actualiza la variable
+ cantidadElementos según el valor proporcionado.
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Se verifica si se proporcionaron los parámetros opcionales para el formato
+ CSV y el encabezado.
+ Si se proporcionaron, se actualizan las variables outCsv y encabezado en
+ consecuencia.
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Se guarda el tiempo de inicio de la ejecución utilizando clock() y gettimeofday(
+).
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Se asigna memoria dinámicamente a los vectores vectorA, vectorB y productoVector
+ial según la cantidad de elementos.
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Se verifica si la asignación de memoria fue exitosa.
+ Si alguno de los vectores es NULL, se imprime un mensaje de error, se finaliza
+ el programa.
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Se llenan los vectores vectorA y vectorB con los números naturales impares
+ y pares, respectivamente, utilizando bucles for.
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Se realiza el cálculo del producto vectorial utilizando un bucle anidado.
+ Para cada elemento del vector resultante, se suma el producto de los elementos
+ correspondientes de vectorA y vectorB.
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Se guarda el tiempo de finalización de la ejecución utilizando clock() y
+ gettimeofday().
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Se calcula el tiempo de ejecución en microsegundos (tiempo) y en segundos
+ (tiempoSeg).
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Si no se especificó la opción de formato CSV, se imprime por pantalla el
+ resultado del producto vectorial y el tiempo de ejecución en microsegundos
+ y segundos.
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Si se especificó la opción de formato CSV, se imprime un encabezado en el
+ archivo CSV si se proporcionó la opción de encabezado.
+ Luego se imprime la cantidad de elementos, el tiempo de ejecución en microsegun
+dos y el tiempo de ejecución en segundos en el archivo CSV.
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Se libera la memoria asignada a los vectores vectorA, vectorB y productoVectoria
+l utilizando free().
+\end_layout
+
+\begin_layout Enumerate
+
+\lang english
+Se retorna 0 para indicar que el programa se ejecutó correctamente.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+El producto vectorial de dos vectores es calculado por este código, en programac
+ión secuencial, según lo discutido previamente.
+ Las convenciones establecidas en el seminario sobre producto vectorial
+ y escalar son seguidas.
+ El primer vector está compuesto por los primeros 100 términos de la serie
+ de números naturales impares.
+ El segundo vector está compuesto por los primeros 100 términos de la serie
+ de números naturales pares, incluyendo el 0.
+ El resultado, junto con el tiempo de ejecución en microsegundos y segundos,
+ es mostrado.
+ Si se especifica la opción correspondiente, también puede generar la salida
+ en formato CSV con los resultados.
+\end_layout
+
+\begin_layout Subsection
 Implemente la multiplicación vectorial, en programación paralela.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Verbatim
+
+/*
+\end_layout
+
+\begin_layout Verbatim
+
+// Programa: ProductoVectorialP.c
+\end_layout
+
+\begin_layout Verbatim
+
+// % mpicc -o ProductoVectorialP ProductoVectorialP.c
+\end_layout
+
+\begin_layout Verbatim
+
+// % mpirun -np 2 ProductoVectorialP
+\end_layout
+
+\begin_layout Verbatim
+
+*/
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+#include <stdio.h>
+\end_layout
+
+\begin_layout Verbatim
+
+#include <stdlib.h>
+\end_layout
+
+\begin_layout Verbatim
+
+#include <time.h>
+\end_layout
+
+\begin_layout Verbatim
+
+#include <sys/time.h>
+\end_layout
+
+\begin_layout Verbatim
+
+#include <mpi.h>
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+#define CANTIDAD_DEF 100 // cantidad de elementos por defecto
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+int main(int argc, char *argv[]) {
+\end_layout
+
+\begin_layout Verbatim
+
+    int cantidadElementos = CANTIDAD_DEF;
+\end_layout
+
+\begin_layout Verbatim
+
+    int outCsv = 0, encabezado = 0;
+\end_layout
+
+\begin_layout Verbatim
+
+    int count1, count2;
+\end_layout
+
+\begin_layout Verbatim
+
+    int *vectorA, *vectorB;
+\end_layout
+
+\begin_layout Verbatim
+
+    long long int *productoVectorial = 0;
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    struct timeval inicio, fin; // estructuras para medir el tiempo de ejecución
+ en microsegundos
+\end_layout
+
+\begin_layout Verbatim
+
+    clock_t iniSeg, finSeg; // variables para medir el tiempo de ejecución
+ en segundos
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    int miRango, numProcs;
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // Inicializar MPI
+\end_layout
+
+\begin_layout Verbatim
+
+    MPI_Init(&argc, &argv);
+\end_layout
+
+\begin_layout Verbatim
+
+    MPI_Comm_rank(MPI_COMM_WORLD, &miRango);
+\end_layout
+
+\begin_layout Verbatim
+
+    MPI_Comm_size(MPI_COMM_WORLD, &numProcs);
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // Se verifican los parámetros
+\end_layout
+
+\begin_layout Verbatim
+
+    // TO DO: Se puede mejorar el control de parámetros.
+ Pero no es el objeto de estudio
+\end_layout
+
+\begin_layout Verbatim
+
+    if (miRango == 0) {
+\end_layout
+
+\begin_layout Verbatim
+
+        if (argc < 2) {
+\end_layout
+
+\begin_layout Verbatim
+
+            printf("No se han especificado valores correctos para los parámetros
+ requeridos.
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+            printf("La cantidad de elementos serán: %d sin formato CSV.
+\backslash
+n", cantidadElementos);
+\end_layout
+
+\begin_layout Verbatim
+
+            printf("Uso: ProductoVectorialP <cantidadElementos> <csv> <encabezad
+o>
+\backslash
+n
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+        } else {
+\end_layout
+
+\begin_layout Verbatim
+
+            if (argc >= 2) {
+\end_layout
+
+\begin_layout Verbatim
+
+                cantidadElementos = atoi(argv[1]);
+\end_layout
+
+\begin_layout Verbatim
+
+            }
+\end_layout
+
+\begin_layout Verbatim
+
+            if (argc >= 3)
+\end_layout
+
+\begin_layout Verbatim
+
+                outCsv = 1;
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+            if (argc == 4)
+\end_layout
+
+\begin_layout Verbatim
+
+                encabezado = 1;
+\end_layout
+
+\begin_layout Verbatim
+
+        }
+\end_layout
+
+\begin_layout Verbatim
+
+    }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    //Difundir datos 
+\end_layout
+
+\begin_layout Verbatim
+
+    MPI_Bcast(&cantidadElementos, 1, MPI_INT, 0, MPI_COMM_WORLD);
+\end_layout
+
+\begin_layout Verbatim
+
+    MPI_Bcast(&outCsv, 1, MPI_INT, 0, MPI_COMM_WORLD);
+\end_layout
+
+\begin_layout Verbatim
+
+    MPI_Bcast(&encabezado, 1, MPI_INT, 0, MPI_COMM_WORLD);
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // guardar el tiempo de inicio
+\end_layout
+
+\begin_layout Verbatim
+
+    iniSeg = clock();
+\end_layout
+
+\begin_layout Verbatim
+
+    gettimeofday(&inicio, NULL);
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // Asignación dinámica de memoria para los vectores y el resultado
+\end_layout
+
+\begin_layout Verbatim
+
+    vectorA = (int *)malloc(cantidadElementos * sizeof(int));
+\end_layout
+
+\begin_layout Verbatim
+
+    vectorB = (int *)malloc(cantidadElementos * sizeof(int));
+\end_layout
+
+\begin_layout Verbatim
+
+    productoVectorial = (long long int *)malloc(cantidadElementos * sizeof(long
+ long int));
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // Verificar si la asignación de memoria fue exitosa
+\end_layout
+
+\begin_layout Verbatim
+
+    if ((vectorA == NULL) || (vectorB == NULL) || (productoVectorial ==
+ NULL)) {
+\end_layout
+
+\begin_layout Verbatim
+
+        printf("No se pudo asignar memoria
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+        exit(1);
+\end_layout
+
+\begin_layout Verbatim
+
+    }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // Llenar el primer vector con los primeros n números naturales impares
+\end_layout
+
+\begin_layout Verbatim
+
+    for (count1 = miRango; count1 < cantidadElementos; count1 += numProcs)
+ {
+\end_layout
+
+\begin_layout Verbatim
+
+        vectorA[count1] = 2 * count1 + 1;
+\end_layout
+
+\begin_layout Verbatim
+
+    }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // Llenar el segundo vector con los primeros n números naturales pares
+\end_layout
+
+\begin_layout Verbatim
+
+    for (count1 = miRango; count1 < cantidadElementos; count1 += numProcs)
+ {
+\end_layout
+
+\begin_layout Verbatim
+
+        vectorB[count1] = 2 * count1;
+\end_layout
+
+\begin_layout Verbatim
+
+    }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // Multiplicación de vectores utilizando el algoritmo de
+\end_layout
+
+\begin_layout Verbatim
+
+    // la convención aportada en el seminario
+\end_layout
+
+\begin_layout Verbatim
+
+    for (count1 = miRango; count1 < cantidadElementos; count1 += numProcs)
+ {
+\end_layout
+
+\begin_layout Verbatim
+
+        productoVectorial[count1] = 0;
+\end_layout
+
+\begin_layout Verbatim
+
+        for (count2 = 0; count2 < cantidadElementos; count2++) {
+\end_layout
+
+\begin_layout Verbatim
+
+            productoVectorial[count1] += vectorA[count1] * vectorB[count2];
+\end_layout
+
+\begin_layout Verbatim
+
+        }
+\end_layout
+
+\begin_layout Verbatim
+
+    }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    long long int *resultados;
+\end_layout
+
+\begin_layout Verbatim
+
+    if (miRango == 0) {
+\end_layout
+
+\begin_layout Verbatim
+
+        resultados = (long long int *)malloc(cantidadElementos * sizeof(long
+ long int));
+\end_layout
+
+\begin_layout Verbatim
+
+    }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    //Reunir los resultados
+\end_layout
+
+\begin_layout Verbatim
+
+    MPI_Gather(productoVectorial, 
+\end_layout
+
+\begin_layout Verbatim
+
+               cantidadElementos / numProcs, 
+\end_layout
+
+\begin_layout Verbatim
+
+               MPI_LONG_LONG_INT,
+\end_layout
+
+\begin_layout Verbatim
+
+               resultados, 
+\end_layout
+
+\begin_layout Verbatim
+
+               cantidadElementos / numProcs, MPI_LONG_LONG_INT, 
+\end_layout
+
+\begin_layout Verbatim
+
+               0, 
+\end_layout
+
+\begin_layout Verbatim
+
+               MPI_COMM_WORLD);
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // guardar el tiempo de finalización
+\end_layout
+
+\begin_layout Verbatim
+
+    finSeg = clock();
+\end_layout
+
+\begin_layout Verbatim
+
+    gettimeofday(&fin, NULL);
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // calcular y mostrar el tiempo de ejecución en microsegundos
+\end_layout
+
+\begin_layout Verbatim
+
+    double tiempo = (double)(fin.tv_usec - inicio.tv_usec) + (double)(fin.tv_sec
+ - inicio.tv_sec) * 1000000;
+\end_layout
+
+\begin_layout Verbatim
+
+    // calcular y mostrar el tiempo de ejecución en segundos
+\end_layout
+
+\begin_layout Verbatim
+
+    double tiempoSeg = ((double)(finSeg - iniSeg)) / CLOCKS_PER_SEC;
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    if (miRango == 0) {
+\end_layout
+
+\begin_layout Verbatim
+
+        if (outCsv != 1) {
+\end_layout
+
+\begin_layout Verbatim
+
+            printf("Ejecución paralela del producto vectorial entre
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+            printf("dos vectores de %d elementos
+\backslash
+n", cantidadElementos);
+\end_layout
+
+\begin_layout Verbatim
+
+            printf("utilizando %d procesadores
+\backslash
+n", numProcs);
+\end_layout
+
+\begin_layout Verbatim
+
+            // Imprimir el resultado del productoVectorial
+\end_layout
+
+\begin_layout Verbatim
+
+            // for (count1 = 0; count1 < cantidadElementos; count1++) {
+\end_layout
+
+\begin_layout Verbatim
+
+            //    printf("%lli ", resultados[count1]);
+\end_layout
+
+\begin_layout Verbatim
+
+            // }
+\end_layout
+
+\begin_layout Verbatim
+
+            printf("
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+            printf("Tiempo de ejecución: %f microsegundos (µs)
+\backslash
+n", tiempo);
+\end_layout
+
+\begin_layout Verbatim
+
+            printf("Tiempo de ejecución: %f segundos
+\backslash
+n
+\backslash
+n
+\backslash
+n", tiempoSeg);
+\end_layout
+
+\begin_layout Verbatim
+
+        } else {
+\end_layout
+
+\begin_layout Verbatim
+
+            if (encabezado == 1) {
+\end_layout
+
+\begin_layout Verbatim
+
+                // printf("cantidadElementos,productoVectorial,microsegundosEjec
+,segundosEjec
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+                printf("cantidadElementos,numProcs,microsegundosEjec,segundosEje
+c
+\backslash
+n");
+\end_layout
+
+\begin_layout Verbatim
+
+            }
+\end_layout
+
+\begin_layout Verbatim
+
+            // printf("%d,%lln,%f,%f
+\backslash
+n", cantidadElementos, numProcs,resultados, tiempo, tiempoSeg);
+\end_layout
+
+\begin_layout Verbatim
+
+            printf("%d,%d,%f,%f
+\backslash
+n", cantidadElementos, numProcs, tiempo, tiempoSeg);
+\end_layout
+
+\begin_layout Verbatim
+
+        }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+        free(resultados);
+\end_layout
+
+\begin_layout Verbatim
+
+    }
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // Liberar la memoria asignada a los vectores y el resultado
+\end_layout
+
+\begin_layout Verbatim
+
+    free(vectorA);
+\end_layout
+
+\begin_layout Verbatim
+
+    free(vectorB);
+\end_layout
+
+\begin_layout Verbatim
+
+    free(productoVectorial);
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    // Finalizar MPI
+\end_layout
+
+\begin_layout Verbatim
+
+    MPI_Finalize();
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+    return 0;
+\end_layout
+
+\begin_layout Verbatim
+
+}
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset VSpace medskip
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1029,7 +3761,7 @@ El código expuesto en el programa ProductoVectorialP.c implementa el cálculo
  del producto vectorial en programación paralela utilizando MPI (Message
  Passing Interface).
  Como se mencionó en el apartado anterior nos hemos basado en el código
- de programación desarrollado en el apartado 2.4, donde el producto vectorial
+ de programación desarrollado en el apartado 2.5, donde el producto vectorial
  fue implementado en programación secuencial.
  Por lo tanto, nos enfocaremos en describir las líneas de código donde se
  implementa la programación paralela, a continuación:
@@ -1056,8 +3788,8 @@ Se verifica si se han proporcionado los parámetros requeridos en la línea
  Si se proporcionaron los parámetros requeridos, se actualiza la variable,
  según los valores proporcionados.
  En caso contrario, se muestra un mensaje de error y se imprime la cantidad
- de elementos por defecto, la cantidad de procesadores y el formato de uso
- del programa.
+ de elementos por defecto, la cantidad de procesos y el formato de uso del
+ programa.
 \end_layout
 
 \begin_layout Enumerate
@@ -1296,7 +4028,8 @@ Es importante destacar que se iniciará el sistema operativo (SO) en runtime
 \end_layout
 
 \begin_layout Subsection
-Desarrollo de ejercicios para cada versión y comparación de resultados
+Desarrollo de ejercicios para cada versión y comparación de resultados para
+ dos vectores de 100 elementos
 \end_layout
 
 \begin_layout Standard
@@ -1538,7 +4271,11 @@ Paralela
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Resultados del producto escalar de dos vectores de 100 elementos.
+Resultados del 
+\shape italic
+producto escalar
+\shape default
+ de dos vectores de 100 elementos.
  Estrategia secuencial y paralela.
 \end_layout
 
@@ -1553,11 +4290,431 @@ Resultados del producto escalar de dos vectores de 100 elementos.
 \end_layout
 
 \begin_layout Standard
-Fig.
- 1.
- Representación gráfica del tiempo empleado en la computación del cálculo
- del producto escalar de dos vectores de 100 elementos empleando estrategias
- secuencial y paralela.
+
+\lang english
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename imagenes/productoEscalar100.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Representación gráfica del tiempo empleado en la computación del cálculo
+ del 
+\shape italic
+producto escalar
+\shape default
+ de dos vectores de 100 elementos empleando estrategias secuencial y paralela.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\lang spanish
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Cantidad Elementos
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Tipo
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Cantidad Procesos
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ejecución en µs.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+100
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Secuencial
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+48
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+100
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Paralela
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+109
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+100
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Paralela
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+127
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+100
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Paralela
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+151
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Resultados del 
+\shape italic
+producto vectorial
+\shape default
+ de dos vectores de 100 elementos.
+ Estrategia secuencial y paralela.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename imagenes/ProductoVectorial100.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Representación gráfica del tiempo empleado en la computación del cálculo
+ del 
+\shape italic
+producto vectorial
+\shape default
+ de dos vectores de 100 elementos empleando estrategias secuencial y paralela.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -1575,6 +4732,867 @@ adas.
  Se destaca que, debido a la prolongada duración del cálculo con vectores
  de más de 1.000.000 de elementos, se estableció este límite como una consideració
 n práctica.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\lang spanish
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Cantidad Elementos
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Tipo
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Cantidad Procesos
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ejecución en µs.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.000 ...
+ 1.000.000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Secuencial
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+26857
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.000 ...
+ 1.000.000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Paralela
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+5336
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.000 ...
+ 1.000.000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Paralela
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+5566
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.000 ...
+ 1.000.000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Paralela
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+3854
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Resultados del tiempo promedio del calculo de 
+\shape italic
+producto escalar 
+\shape default
+de dos vectores que van entre 1.000...1.000.000 elementos.
+ Estrategia secuencial y paralela.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename imagenes/ProductoEscalar.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Representación gráfica del tiempo promedio empleado en la computación del
+ cálculo del 
+\shape italic
+producto escalar
+\shape default
+ de dos vectores que van entre 1.000...1.000.000 elementos empleando estrategias
+ secuencial y paralela.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename imagenes/ProductoEscalarProcesos.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Representación gráfica del tiempo empleado en la computación del cálculo
+ del 
+\shape italic
+producto escalar
+\shape default
+ de dos vectores que van entre 1.000...1.000.000 elementos, empleando estrategias
+ paralela.
+ Destacando la corrida por cantidad de procesos.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\lang spanish
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Cantidad Elementos
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Tipo
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Cantidad Procesos
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ejecución en µs.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.000 ...
+ 1.000.000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Secuencial
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+327314279
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.000 ...
+ 1.000.000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Paralela
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+201119555
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.000 ...
+ 1.000.000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Paralela
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+155145760
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.000 ...
+ 1.000.000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Paralela
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+130483841
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Resultados del tiempo promedio del calculo de 
+\shape italic
+producto vectorial 
+\shape default
+de dos vectores que van entre 1.000...1.000.000 elementos.
+ Estrategia secuencial y paralela.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename imagenes/ProductoVectorial.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Representación gráfica del tiempo promedio empleado en la computación del
+ cálculo del 
+\shape italic
+producto vectorial
+\shape default
+ de dos vectores que van entre 1.000...1.000.000 elementos empleando estrategias
+ secuencial y paralela.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename imagenes/ProductoVectorialProcesos.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Representación gráfica del tiempo empleado en la computación del cálculo
+ del 
+\shape italic
+producto vectorial
+\shape default
+ de dos vectores que van entre 1.000...1.000.000 elementos, empleando estrategias
+ paralela.
+ Destacando la corrida por cantidad de procesos.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection

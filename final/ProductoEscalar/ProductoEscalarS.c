@@ -1,20 +1,5 @@
 /*
 // gcc ProductoEscalarS.c -o ProductoEscalarS -Wall -pedantic
-//
-//
-// Para realizar el producto escalar de dos vectores de 10000000 elementos 
-// en ANSI C, se pueden utilizar las funciones malloc y free para asignar 
-// y liberar memoria dinámica, respectivamente. Se puede crear un bucle for 
-// para inicializar los elementos de los dos vectores y luego otro bucle for 
-// para calcular el producto escalar.
-// 
-// En este ejemplo, se utiliza malloc para asignar memoria para los vectores 
-// de 10000000 elementos. Se verifica si la asignación de memoria fue exitosa 
-// y, si es así, se inicializan los elementos de los dos vectores utilizando 
-// bucles for. Luego, se utiliza otro bucle for para calcular el producto 
-// escalar de los dos vectores y se almacena en una variable llamada 
-// producto_escalar. Finalmente, se imprime el producto escalar y se utiliza 
-// free para liberar la memoria asignada para los vectores.  
 */
 
 #include <stdio.h>

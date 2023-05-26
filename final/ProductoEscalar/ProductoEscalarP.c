@@ -1,15 +1,6 @@
 /*
 // % mpicc -o ProductoEscalarP ProductoEscalarP.c
 // % mpirun -np 2 ProductoEscalarP
-//
-//
-// Este código utiliza la función MPI_Init para inicializar MPI, 
-// MPI_Comm_rank para obtener el rango del proceso, MPI_Comm_size 
-// para obtener el número de procesos, MPI_Reduce para sumar los 
-// productos escalares parciales de todos los procesos y MPI_Finalize 
-// para finalizar MPI. Además, divide el trabajo entre los procesos 
-// con la variable elementosPorProceso y maneja los elementos restantes 
-// en el proceso 0.
 */
 
 #include <stdio.h>
@@ -140,7 +131,7 @@ int main(int argc, char *argv[]) {
       printf("Tiempo de ejecución: %f segundos\n\n\n", tiempoSeg);
     } else {
       if (encabezado == 1)
-        printf("cantidadElementos, cantidadProcesadores,productoEscalar,microsegundosEjec,segundosEjec\n");
+        printf("cantidadElementos, cantidadProcesos,productoEscalar,microsegundosEjec,segundosEjec\n");
 
       printf("%d,%d,%lli,%f,%f\n", cantidadElementos, numProcs, productoEscalar, tiempo, tiempoSeg);
     }
